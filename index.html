@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🩺</span>
+        <span class="logo-text">PatientTracker</span>
+      </div>
+      <div class="header-stats">
+        <div class="stat-box">
+          <span class="stat-number" id="total-count">0</span>
+          <span class="stat-label">Total Patients</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="critical-count">0</span>
+          <span class="stat-label">Critical</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="stable-count">0</span>
+          <span class="stat-label">Stable</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== MAIN LAYOUT ========== -->
+  <main class="main">
+
+    <!-- LEFT PANEL: Add Patient Form -->
+    <aside class="panel panel-form">
+      <h2 class="panel-title">Admit Patient</h2>
+
+      <form id="patient-form" novalidate>
+
+        <div class="form-group">
+          <label for="name">Full Name <span class="required">*</span></label>
+          <input type="text" id="name" placeholder="e.g. John Otieno" />
+          <span class="error-msg" id="name-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="age">Age <span class="required">*</span></label>
+          <input type="number" id="age" placeholder="e.g. 45" min="0" max="120" />
+          <span class="error-msg" id="age-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="diagnosis">Diagnosis <span class="required">*</span></label>
+          <input type="text" id="diagnosis" placeholder="e.g. Hypertension" />
+          <span class="error-msg" id="diagnosis-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status <span class="required">*</span></label>
+          <select id="status">
+            <option value="">-- Select status --</option>
+            <option value="stable">Stable</option>
+            <option value="critical">Critical</option>
+            <option value="observation">Under Observation</option>
+            <option value="discharged">Discharged</option>
+          </select>
+          <span class="error-msg" id="status-error"></span>
+        </div>
+
+        <!-- Vitals section -->
+        <div class="form-group">
+          <label for="bp">Blood Pressure (mmHg)</label>
+          <input type="text" id="bp" placeholder="e.g. 120/80" />
+        </div>
+
+        <div class="form-group">
+          <label for="hr">Heart Rate (bpm)</label>
+          <input type="number" id="hr" placeholder="e.g. 72" min="0" max="300" />
+        </div>
+
+        <!-- BMI calculator -->
+        <div class="bmi-section">
+          <div class="bmi-title">BMI Calculator</div>
+          <div class="bmi-row">
+            <div class="form-group">
+              <label for="weight">Weight (kg)</label>
+              <input type="number" id="weight" placeholder="70" />
+            </div>
+            <div class="form-group">
+              <label for="height">Height (cm)</label>
+              <input type="number" id="height" placeholder="170" />
+            </div>
+          </div>
+          <div class="bmi-result" id="bmi-result"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submit-btn">
+          + Admit Patient
+        </button>
+
+        <button type="button" class="btn btn-secondary" id="load-sample-btn">
+          Load Sample Patients
+        </button>
+
+      </form>
+    </aside>
+
+    <!-- RIGHT PANEL: Patient List -->
+    <section class="panel panel-list">
+
+      <!-- Filter & Search bar -->
+      <div class="list-header">
+        <h2 class="panel-title">Patient Ward</h2>
+        <div class="filter-row">
+          <input type="text" id="search-input" placeholder="🔍  Search by name or diagnosis..." class="search-box" />
+          <select id="filter-status" class="filter-select">
+            <option value="all">All Statuses</option>
+            <option value="stable">Stable</option>
+            <option value="critical">Critical</option>
+            <option value="observation">Under Observation</option>
+            <option value="discharged">Discharged</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Loading spinner (shown while fetching) -->
+      <div class="spinner" id="spinner">
+        <div class="spinner-ring"></div>
+        <p>Loading patients...</p>
+      </div>
+
+      <!-- Empty state message -->
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">🏥</div>
+        <p>No patients admitted yet.</p>
+        <p class="empty-sub">Use the form to admit a patient or load sample data.</p>
+      </div>
+
+      <!-- The patient cards render here -->
+      <div class="patient-grid" id="patient-grid"></div>
+
+    </section>
+
+  </main>
+
+  <!-- ========== PATIENT DETAIL MODAL ========== -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Load our JavaScript last so the HTML is ready when JS runs -->
+  <script src="app.js"></script>
+
+</body>
+</html>
